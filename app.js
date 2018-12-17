@@ -4,12 +4,15 @@ const json = require('koa-json')
 const KoaRouter = require('koa-router')
 const path = require('path')
 const mongoose = require('mongoose')
+const bodyParser = require('koa-bodyparser')
+
 const mongoURI = require('./config/db').mongoURI
 const users = require('./routes/api/user')
 // 使用
 const router = new KoaRouter()
 const app = new Koa()
-app.use(json())  // json pretty
+// app.use(json())  // json pretty
+app.use(bodyParser())
 // 实际代码
   // 配置模板引擎
   // render(app,{
