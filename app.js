@@ -11,23 +11,7 @@ const router = new Router();
 const bodyParser = require('koa-bodyparser');
 app.use(bodyParser());
 app.use(cors());
-// app.use(async (ctx, next) => {
-//   console.log(11,ctx.request.header.origin,ctx.request.header.origin)
-//   if (ctx.request.header.origin !== ctx.origin && whiteList.includes(ctx.request.header.origin)) {
-//     ctx.set('Access-Control-Allow-Origin', ctx.request.header.origin);
-//     ctx.set('Access-Control-Allow-Credentials', true);
-//   }
-//   await next();
-// });
 
-// app.use(async (ctx, next) => {
-//   if (ctx.method === 'OPTIONS') {
-//     ctx.set('Access-Control-Allow-Methods', 'PUT,DELETE,POST,GET');
-//     ctx.set('Access-Control-Max-Age', 3600 * 24);
-//     ctx.body = '';
-//   }
-//   await next();
-// });
 
 //引入数据库操作方法
 const UserController = require('./controller/user.js');
@@ -44,7 +28,7 @@ registerRouter.post('/register', UserController.Reg);
 
 //获取所有用户
 const userRouter = new Router();
-userRouter.get('/user', checkToken, UserController.GetAllUsers);
+userRouter.get('/user', UserController.GetAllUsers);
 //删除某个用户
 const delUserRouter = new Router();
 delUserRouter.post('/delUser', checkToken, UserController.DelUser);

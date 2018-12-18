@@ -10,6 +10,7 @@ const createToken = require('../token/createToken.js');
 //数据库的操作
 //根据用户名查找用户
 const findUser = (username) => {
+    console.log(11,username)
     return new Promise((resolve, reject) => {
         User.findOne({ username }, (err, doc) => {
             if(err){
@@ -45,8 +46,8 @@ const delUser = function(id){
 //登录
 const Login = async ( ctx ) => {
     //拿到账号和密码
-    let username = ctx.request.body.name;
-    let password = ctx.request.body.pass;//解密
+    let username = ctx.request.body.email;
+    let password = ctx.request.body.password;//解密
     let doc = await findUser(username);
     if(!doc){
         console.log('检查到用户名不存在');
@@ -86,16 +87,17 @@ const Login = async ( ctx ) => {
 };
 //注册
 const Reg = async ( ctx ) => {
-    console.log(233,ctx.request.body)
+    // console.log(233,ctx.request.body)
     let user = new User({
         username: ctx.request.body.email,
         password: ctx.request.body.password, //加密
         token: createToken(this.username), //创建token并存入数据库
-        // create_time: moment(objectIdToTimestamp(user._id)).format('YYYY-MM-DD HH:mm:ss'),//将objectid转换为用户创建时间
+        create_time: moment().format('x') ,//用户创建时间
     });
-    console.log(233,ctx.request.body.name,ctx.request.body.pass)
     //将objectid转换为用户创建时间(可以不用)
-    user.create_time = moment(objectIdToTimestamp(user._id)).format('YYYY-MM-DD HH:mm:ss');
+    let timeID = moment().format('x') 
+    // console.log(233,timeID)
+    // user.create_time = moment(objectIdToTimestamp(user._id)).format('YYYY-MM-DD HH:mm:ss');
 
     let doc = await findUser(user.username);
     if(doc){
