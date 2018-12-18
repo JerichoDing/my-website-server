@@ -1,9 +1,9 @@
-const User = require('../config/db').User;
+const User = require('../config/db').User
 //下面这两个包用来生成时间
 const moment = require('moment');
 const objectIdToTimestamp = require('objectid-to-timestamp');
 //用于密码加密
-const sha1 = require('sha1');
+// const sha1 = require('sha1');
 //createToken
 const createToken = require('../token/createToken.js');
 
@@ -46,7 +46,7 @@ const delUser = function(id){
 const Login = async ( ctx ) => {
     //拿到账号和密码
     let username = ctx.request.body.name;
-    let password = sha1(ctx.request.body.pass);//解密
+    let password = ctx.request.body.pass;//解密
     let doc = await findUser(username);
     if(!doc){
         console.log('检查到用户名不存在');
@@ -86,12 +86,14 @@ const Login = async ( ctx ) => {
 };
 //注册
 const Reg = async ( ctx ) => {
+    console.log(233,ctx.request.body)
     let user = new User({
-        username: ctx.request.body.name,
-        password: sha1(ctx.request.body.pass), //加密
+        username: ctx.request.body.email,
+        password: ctx.request.body.password, //加密
         token: createToken(this.username), //创建token并存入数据库
-        create_time: moment(objectIdToTimestamp(user._id)).format('YYYY-MM-DD HH:mm:ss'),//将objectid转换为用户创建时间
+        // create_time: moment(objectIdToTimestamp(user._id)).format('YYYY-MM-DD HH:mm:ss'),//将objectid转换为用户创建时间
     });
+    console.log(233,ctx.request.body.name,ctx.request.body.pass)
     //将objectid转换为用户创建时间(可以不用)
     user.create_time = moment(objectIdToTimestamp(user._id)).format('YYYY-MM-DD HH:mm:ss');
 
