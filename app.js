@@ -5,6 +5,7 @@ const KoaRouter = require('koa-router')
 const path = require('path')
 const mongoose = require('mongoose')
 const bodyParser = require('koa-bodyparser')
+const cors  = require('koa2-cors')
 
 const mongoURI = require('./config/db').mongoURI
 const users = require('./routes/api/user')
@@ -13,28 +14,10 @@ const router = new KoaRouter()
 const app = new Koa()
 // app.use(json())  // json pretty
 app.use(bodyParser())
-// 实际代码
-  // 配置模板引擎
-  // render(app,{
-  //   root:path.join(__dirname,'views'),
-  //   layout:'layout',
-  //   viewExt:'html',
-  //   cache:false,
-  //   debug:false,
-  //   async:true
-  // })
-  // 路由渲染页面
-  // router.get("/",index)
-  // async function index(ctx){ 
-  //     await ctx.render('index',{
-  //       title:'I love you',
-  //       hi:'Do you know me?',
-  //       things:things,
-  //     })
-  //   }
+app.use(cors());
 
   router.get("/add",showAdd)
-  async function showAdd(ctx){ 
+  async function showAdd(ctx){
       await ctx.render('add')
     }
 
@@ -51,7 +34,7 @@ app.use(bodyParser())
   // router.get("/about",ctx=>{ ctx.body = {abx:'hello router'} })
   // app.use(async ctx=>{ //   ctx.body = {msg:"hello Koa"} // })
 //路由地址
-router.use('/api/user',users)  //localhost:3000/api/user/test
+router.use('/api',users)  //localhost:3000/api/user/test
 //配置路由模块
 app.use(router.routes()).use(router.allowedMethods()) //
 

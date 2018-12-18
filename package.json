@@ -17,6 +17,7 @@
     "koa-ejs": "^4.1.2",
     "koa-json": "^2.0.2",
     "koa-router": "^7.4.0",
+    "koa2-cors": "^2.0.6",
     "mongoose": "^5.4.0"
   }
 }

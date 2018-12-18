@@ -2,7 +2,7 @@ const Router = require('koa-router')
 const router = new Router()
 
 
-router.get("/test",async (ctx)=>{ 
+router.post("/login",async (ctx)=>{ 
   ctx.status = 200;
    ctx.body = {msg:'users works!'}
 });
