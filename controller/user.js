@@ -31,9 +31,12 @@ const findAllUsers = () => {
         });
     });
 };
+
 //删除某个用户
-const delUser = function(id){
-    return new Promise(( resolve, reject) => {
+const DelUser = async( ctx ) => {
+    //拿到要删除的用户id
+    let id = ctx.request.body.id;
+    await new Promise(( resolve, reject) => {
         User.findOneAndRemove({ _id: id }, err => {
             if(err){
                 reject(err);
@@ -42,6 +45,10 @@ const delUser = function(id){
             resolve();
         });
     });
+    ctx.status = 200;
+    ctx.body = {
+        success: '删除成功'
+    };
 };
 //登录
 const Login = async ( ctx ) => {
@@ -133,16 +140,7 @@ const GetAllUsers = async( ctx ) => {
     };
 };
 
-//删除某个用户
-const DelUser = async( ctx ) => {
-    //拿到要删除的用户id
-    let id = ctx.request.body.id;
-    await delUser(id);
-    ctx.status = 200;
-    ctx.body = {
-        success: '删除成功'
-    };
-};
+
 
 module.exports = {
     Login,

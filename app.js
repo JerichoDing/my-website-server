@@ -22,6 +22,9 @@ const checkToken = require('./token/checkToken.js');
 //登录
 const loginRouter = new Router();
 loginRouter.post('/login', UserController.Login);
+//删除某个用户
+const delUserRouter = new Router();
+delUserRouter.post('/delUser',checkToken, UserController.DelUser);
 //注册
 const registerRouter = new Router();
 registerRouter.post('/register', UserController.Reg);
@@ -29,9 +32,7 @@ registerRouter.post('/register', UserController.Reg);
 //获取所有用户
 const userRouter = new Router();
 userRouter.get('/user', UserController.GetAllUsers);
-//删除某个用户
-const delUserRouter = new Router();
-delUserRouter.post('/delUser', checkToken, UserController.DelUser);
+
 
 //装载上面四个子路由
 router.use('/api',loginRouter.routes(),loginRouter.allowedMethods());
