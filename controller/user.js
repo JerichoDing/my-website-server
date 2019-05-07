@@ -1,13 +1,13 @@
 const moment = require('moment')
-const objectIdToTimestamp = require('objectid-to-timestamp')
+// const objectIdToTimestamp = require('objectid-to-timestamp')
 const { User } = require('../config/db')
 const { createToken } = require('../middleware/token')
 
-//用于密码加密
+// 用于密码加密
 // const sha1 = require('sha1');
 
-//数据库的操作
-//根据用户名查找用户
+// 数据库的操作
+// 根据用户名查找用户
 const findUser = username => {
   console.log(11, username)
   return new Promise((resolve, reject) => {
@@ -19,7 +19,7 @@ const findUser = username => {
     })
   })
 }
-//找到所有用户
+// 找到所有用户
 const findAllUsers = () => {
   return new Promise((resolve, reject) => {
     User.find({}, (err, doc) => {
@@ -31,21 +31,21 @@ const findAllUsers = () => {
   })
 }
 
-//注册
+// 注册
 const Reg = async ctx => {
   // console.log(233,ctx.request.body)
-  let user = new User({
+  const user = new User({
     username: ctx.request.body.email,
-    password: ctx.request.body.password, //加密
-    token: createToken(this.username), //创建token并存入数据库
-    create_time: moment().format('x'), //用户创建时间
+    password: ctx.request.body.password, // 加密
+    token: createToken(this.username), // 创建token并存入数据库
+    create_time: moment().format('x'), // 用户创建时间
   })
-  //将objectid转换为用户创建时间(可以不用)
-  let timeID = moment().format('x')
+  // 将objectid转换为用户创建时间(可以不用)
+  // const timeID = moment().format('x')
   // console.log(233,timeID)
   // user.create_time = moment(objectIdToTimestamp(user._id)).format('YYYY-MM-DD HH:mm:ss');
 
-  let doc = await findUser(user.username)
+  const doc = await findUser(user.username)
   if (doc) {
     console.log('用户名已经存在')
     ctx.status = 200
@@ -69,12 +69,12 @@ const Reg = async ctx => {
   }
 }
 
-//登录
+// 登录
 const Login = async ctx => {
-  //拿到账号和密码
-  let username = ctx.request.body.email
-  let password = ctx.request.body.password //解密
-  let doc = await findUser(username)
+  // 拿到账号和密码
+  const username = ctx.request.body.email
+  const { password } = ctx.request.body // 解密
+  const doc = await findUser(username)
   if (!doc) {
     console.log('检查到用户名不存在')
     ctx.status = 200
@@ -84,8 +84,8 @@ const Login = async ctx => {
   } else if (doc.password === password) {
     console.log('密码一致!')
 
-    //生成一个新的token,并存到数据库
-    let token = createToken(username)
+    // 生成一个新的token,并存到数据库
+    const token = createToken(username)
     console.log(token)
     doc.token = token
     await new Promise((resolve, reject) => {
@@ -100,7 +100,7 @@ const Login = async ctx => {
     ctx.body = {
       success: true,
       username,
-      token, //登录成功要创建一个新的token,应该存入数据库
+      token, // 登录成功要创建一个新的token,应该存入数据库
       create_time: doc.create_time,
     }
   } else {
@@ -112,10 +112,10 @@ const Login = async ctx => {
   }
 }
 
-//获得所有用户信息
+// 获得所有用户信息
 const GetAllUsers = async ctx => {
-  //查询所有用户信息
-  let doc = await findAllUsers()
+  // 查询所有用户信息
+  const doc = await findAllUsers()
   ctx.status = 200
   ctx.body = {
     success: '成功',
@@ -123,10 +123,10 @@ const GetAllUsers = async ctx => {
   }
 }
 
-//删除某个用户
+// 删除某个用户
 const DelUser = async ctx => {
-  //拿到要删除的用户id
-  let id = ctx.request.body.id
+  // 拿到要删除的用户id
+  const { id } = ctx.request.body
   await new Promise((resolve, reject) => {
     User.findOneAndRemove({ _id: id }, err => {
       if (err) {

@@ -1,4 +1,5 @@
 const Koa = require('koa')
+
 const app = new Koa()
 const cors = require('koa2-cors')
 const bodyParser = require('koa-bodyparser')
@@ -12,6 +13,7 @@ app.use(cors())
 app.use(router.routes()).use(router.allowedMethods())
 
 const port = process.env.PORT || 3000
+
 app.listen(port, () =>
-  console.log('The server is running at http://localhost:' + port)
+  console.log(`The server is running at http://localhost: ${port}`)
 )

@@ -2,8 +2,9 @@
 //   mongoURI:'mongodb://dingxihu:d.1871341260@ds129454.mlab.com:29454/my-website'
 // }
 
-//db.js
+// db.js
 const mongoose = require('mongoose')
+
 mongoose.connect(
   'mongodb://dingxihu:d.1871341260@ds129454.mlab.com:29454/my-website',
   { useNewUrlParser: true }
@@ -11,17 +12,18 @@ mongoose.connect(
 
 // 防止Mongoose: mpromise 错误
 mongoose.Promise = global.Promise
-let db = mongoose.connection
 
-db.on('error', function() {
+const db = mongoose.connection
+
+db.on('error', () => {
   console.log('数据库连接出错！')
 })
-db.once('open', function() {
+db.once('open', () => {
   console.log('数据库连接成功！')
 })
 
-//声明schema
-const Schema = mongoose.Schema
+// 声明schema
+const { Schema } = mongoose
 const userSchema = new Schema({
   username: String,
   password: String,
